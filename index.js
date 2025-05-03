@@ -17,10 +17,10 @@ app.post('/api/generar-imagen', async (req, res) => {
     const response = await axios.post(
       'https://api.openai.com/v1/images/generations',
       {
-        model: 'dall-e-2',
+        model: 'dall-e-3',
         prompt,
         n: 1,
-        size: '512x512'
+        size: '1024x1024'
       },
       {
         headers: {
