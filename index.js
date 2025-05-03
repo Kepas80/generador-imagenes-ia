@@ -10,6 +10,9 @@ app.use(express.json());
 app.post('/api/generar-imagen', async (req, res) => {
   const { prompt } = req.body;
 
+  console.log("📝 Prompt recibido:", prompt);
+  console.log("🔐 Clave API cargada:", process.env.OPENAI_API_KEY ? "✅ CARGADA" : "❌ NO CARGADA");
+
   try {
     const response = await axios.post(
       'https://api.openai.com/v1/images/generations',
@@ -31,10 +34,12 @@ app.post('/api/generar-imagen', async (req, res) => {
     res.json({ imageUrl });
 
   } catch (error) {
-    console.error("Error al generar imagen:", error.response?.data || error.message);
+    const fullError = error.response?.data || error.message;
+    console.error("❌ Error al generar imagen:", fullError);
+
     res.status(500).json({
       error: true,
-      message: error.response?.data?.error?.message || 'Error desconocido al generar la imagen.'
+      message: fullError
     });
   }
 });
