@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Generador DALL·E</title>
+</head>
+<body>
+  <h2>Generador de Imágenes con IA</h2>
+  <input type="text" id="promptInput" placeholder="Ej: un gato astronauta en Marte" />
+  <button onclick="generarImagen()">Generar Imagen</button>
+  <br><br>
+  <img id="imagen" style="max-width: 400px;" />
+
+  <script>
+    async function generarImagen() {
+      const prompt = document.getElementById('promptInput').value.trim();
+      if (!prompt) {
+        alert("Por favor, escribe una descripción para generar la imagen.");
+        return;
+      }
+
+      const response = await fetch('http://localhost:3001/api/generar-imagen', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+
+      const data = await response.json();
+      if (data.imageUrl) {
+        document.getElementById('imagen').src = data.imageUrl;
+      } else {
+        alert("Hubo un problema generando la imagen.");
+        console.log(data);
+      }
+    }
+  </script>
+</body>
+</html>
